@@ -25,12 +25,13 @@ namespace cgppm.Ppm
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="maximumColorValue">The maximum color value of the image.</param>
-        public RawPpmImage(string magicNumber, int width, int height, ushort maximumColorValue)
+        public RawPpmImage(string magicNumber, int width, int height, ushort maximumColorValue, byte[] imageData)
         {
             MagicNumber = magicNumber;
             Width = width;
             Height = height;
             MaximumColorValue = maximumColorValue;
+            ImageData = imageData;
 
             DetermineProperties();
         }
@@ -64,6 +65,11 @@ namespace cgppm.Ppm
         /// The maximum color value of the image. The default value is the highest possible value for a byte.
         /// </summary>
         public ushort MaximumColorValue { get; private set; } = byte.MaxValue;
+
+        /// <summary>
+        /// The image data of this image.
+        /// </summary>
+        public byte[] ImageData { get; private set; }
 
         /// <summary>
         /// The image format.

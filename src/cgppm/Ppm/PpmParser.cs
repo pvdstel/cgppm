@@ -63,7 +63,15 @@ namespace cgppm.Ppm
                 }
             }
 
-            return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value);
+            // Get the image data
+            byte[] imageData;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                imageData = ms.GetBuffer();
+            }
+
+            return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value, imageData);
         }
 
         /// <summary>
