@@ -57,7 +57,7 @@ namespace cgppm.Ppm
                     string nextLine = sr.ReadLine().Trim();
                     if (!IsComment(nextLine))
                     {
-                        ushort.Parse(nextLine);
+                        maxColorValue = ushort.Parse(nextLine);
                     }
 
                 }
