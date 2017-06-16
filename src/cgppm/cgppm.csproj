@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>cgppm.Main</StartupObject>
+    <StartupObject>cgppm.Launcher</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Main.cs" />
+    <Compile Include="Launcher.cs" />
     <Compile Include="Netpbm\Formats.cs" />
     <Compile Include="Netpbm\RawImage.cs" />
     <Compile Include="Utilities.cs" />
