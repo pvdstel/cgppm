@@ -18,9 +18,10 @@ namespace cgppm
             files = args.Where(s => File.Exists(s));
 
             Parser parser = new Parser();
-            List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
-
-            Console.WriteLine(string.Format("Successfully parsed {0} files.", rawImages.Count));
+            IEnumerable<RawImage> rawImages = files.Select(f => parser.Read(f));
+            IEnumerable<NormalizedImage> normalizedImages = rawImages.Select(ri => new NormalizedImage(ri));
+            
+            Console.WriteLine(string.Format("Successfully parsed {0} files.", normalizedImages.Count()));
         }
     }
 }
