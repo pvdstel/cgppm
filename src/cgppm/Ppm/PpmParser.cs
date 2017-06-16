@@ -9,6 +9,9 @@ namespace cgppm.Ppm
 {
     public class PpmParser
     {
+        private const byte LineFeed = 10;
+        private const byte CarriageReturn = 13;
+
         /// <summary>
         /// Reads the PBM image data from the stream.
         /// </summary>
@@ -24,52 +27,47 @@ namespace cgppm.Ppm
             ushort? maxColorValue = null;
             byte[] imageData;
 
-            // Find image properties
-            using (StreamReader sr = new StreamReader(stream))
+            // Detect the magic number
+            while (magicNumber == null)
             {
-                // Detect the magic number
-                while (magicNumber == null)
+                string nextLine = GetStreamLine(stream);
+                if (!IsComment(nextLine))
                 {
-                    string nextLine = sr.ReadLine().Trim();
-                    if (!IsComment(nextLine))
+                    magicNumber = nextLine;
+                    // Detect the maxium color value if specified
+                    if (detectMaximumColorValue)
                     {
-                        magicNumber = nextLine;
-                        // Detect the maxium color value if specified
-                        if (detectMaximumColorValue)
-                        {
-                            maxColorValue = RawPpmImage.GetDefaultMaximumColorValue(RawPpmImage.GetImageFormat(magicNumber));
-                        }
+                        maxColorValue = RawPpmImage.GetDefaultMaximumColorValue(RawPpmImage.GetImageFormat(magicNumber));
                     }
                 }
-                // Detect the image size
-                while (!width.HasValue || !height.HasValue)
+            }
+            // Detect the image size
+            while (!width.HasValue || !height.HasValue)
+            {
+                string nextLine = GetStreamLine(stream);
+                if (!IsComment(nextLine))
                 {
-                    string nextLine = sr.ReadLine().Trim();
-                    if (!IsComment(nextLine))
-                    {
-                        string[] sizes = nextLine.Split(' ');
-                        width = int.Parse(sizes[0]);
-                        height = int.Parse(sizes[1]);
-                    }
+                    string[] sizes = nextLine.Split(' ');
+                    width = int.Parse(sizes[0]);
+                    height = int.Parse(sizes[1]);
                 }
-                // Detect the maximum color value
-                while (!maxColorValue.HasValue)
+            }
+            // Detect the maximum color value
+            while (!maxColorValue.HasValue)
+            {
+                string nextLine = GetStreamLine(stream);
+                if (!IsComment(nextLine))
                 {
-                    string nextLine = sr.ReadLine().Trim();
-                    if (!IsComment(nextLine))
-                    {
-                        maxColorValue = ushort.Parse(nextLine);
-                    }
-
+                    maxColorValue = ushort.Parse(nextLine);
                 }
 
-                // Get the image data
-                // This needs to be in here because disposing of the stream reader will also close the stream
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    stream.CopyTo(ms);
-                    imageData = ms.GetBuffer();
-                }
+            }
+
+            // Get the image data
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                imageData = ms.ToArray();
             }
 
             return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value, imageData);
@@ -102,6 +100,27 @@ namespace cgppm.Ppm
         {
             if (string.IsNullOrEmpty(line)) throw new ArgumentNullException(nameof(line));
             return line[0] == '#';
+        }
+
+        /// <summary>
+        /// Reads a single line of text from stream.
+        /// </summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <returns>A <see cref="string"/> with the line that was read.</returns>
+        private static string GetStreamLine(Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            if (!stream.CanRead) throw new InvalidOperationException("The stream cannot be read.");
+            if (stream.Length == 0) return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            int nextByte = stream.ReadByte();
+            while (nextByte > 0 && nextByte != LineFeed && nextByte != CarriageReturn)
+            {
+                sb.Append((char)nextByte);
+                nextByte = stream.ReadByte();
+            }
+            return sb.ToString();
         }
     }
 }
