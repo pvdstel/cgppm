@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cgppm.Netpbm
 {
@@ -55,6 +51,11 @@ namespace cgppm.Netpbm
         #endregion
 
         #region Methods
+
+        public override string ToString()
+        {
+            return string.Format(nameof(NormalizedImage) + "({0}, {1})", Width, Height);
+        }
 
         /// <summary>
         /// Normalizes image data to values between 0 and 1.
