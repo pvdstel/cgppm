@@ -10,7 +10,7 @@ namespace cgppm.Ppm
     public class PpmParser
     {
         /// <summary>
-        /// Reads the PPM image data from the stream.
+        /// Reads the PBM image data from the stream.
         /// </summary>
         /// <param name="stream">The stream to read from.</param>
         /// <param name="detectMaximumColorValue">Whether the maximum color value should be detected automatically.</param>
@@ -66,7 +66,13 @@ namespace cgppm.Ppm
             return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value);
         }
 
-        public RawPpmImage Read(string path)
+        /// <summary>
+        /// Reads the PPM image data from the stream.
+        /// </summary>
+        /// <param name="path">The path to read the file from.</param>
+        /// <param name="detectMaximumColorValue">Whether the maximum color value should be detected automatically.</param>
+        /// <returns>A <see cref="RawPpmImage"/> containing the image data.</returns>
+        public RawPpmImage Read(string path, bool detectMaximumColorValue = false)
         {
             if (string.IsNullOrEmpty(path) || string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
 
@@ -74,7 +80,7 @@ namespace cgppm.Ppm
 
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
-                return Read(fs);
+                return Read(fs, detectMaximumColorValue);
             }
         }
 
