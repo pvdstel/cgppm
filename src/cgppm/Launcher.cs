@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace cgppm
 {
-    public class Main
+    public class Launcher
     {
         private static IEnumerable<string> switches;
         private static IEnumerable<string> files;
