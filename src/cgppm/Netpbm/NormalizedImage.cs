@@ -54,7 +54,7 @@ namespace cgppm.Netpbm
 
         public override string ToString()
         {
-            return string.Format(nameof(NormalizedImage) + "({0}, {1})", Width, Height);
+            return string.Format(nameof(NormalizedImage) + "({0}, {1}, {2})", Width, Height, ImageData.Length);
         }
 
         /// <summary>
