@@ -4,28 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cgppm.Ppm
+namespace cgppm.Netpbm
 {
     /// <summary>
     /// Represents a raw PPM image.
     /// </summary>
-    public class RawPpmImage
+    public class RawImage
     {
         #region Constants
 
-        public const ushort DefaultMaximumColorValue = ushort.MaxValue;
+        public const ushort DefaultMaximumColorValue = byte.MaxValue;
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RawPpmImage"/> class.
+        /// Initializes a new instance of the <see cref="RawImage"/> class.
         /// </summary>
         /// <param name="magicNumber">The magic number of the image.</param>
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="maximumColorValue">The maximum color value of the image.</param>
-        public RawPpmImage(string magicNumber, int width, int height, ushort maximumColorValue, byte[] imageData)
+        public RawImage(string magicNumber, int width, int height, ushort maximumColorValue, byte[] imageData)
         {
             MagicNumber = magicNumber;
             Width = width;
@@ -64,7 +64,7 @@ namespace cgppm.Ppm
         /// <summary>
         /// The maximum color value of the image. The default value is the highest possible value for a byte.
         /// </summary>
-        public ushort MaximumColorValue { get; private set; } = byte.MaxValue;
+        public ushort MaximumColorValue { get; private set; } = DefaultMaximumColorValue;
 
         /// <summary>
         /// The image data of this image.
@@ -74,7 +74,7 @@ namespace cgppm.Ppm
         /// <summary>
         /// The image format.
         /// </summary>
-        public ImageFormats ImageFormat { get; private set; } = ImageFormats.Unknown;
+        public Formats ImageFormat { get; private set; } = Formats.Unknown;
 
         /// <summary>
         /// Whether this image is in binary format.
@@ -86,29 +86,29 @@ namespace cgppm.Ppm
 
         public override string ToString()
         {
-            return string.Format(nameof(RawPpmImage) + "({0}, {1], {2}, {3}, length)", MagicNumber, Width, Height, MaximumColorValue);
+            return string.Format(nameof(RawImage) + "({0}, {1], {2}, {3}, length)", MagicNumber, Width, Height, MaximumColorValue);
         }
 
         /// <summary>
         /// Gets the iamge format from the given magic number.
         /// </summary>
         /// <param name="magicNumber">The magic number.</param>
-        /// <returns>A <see cref="ImageFormats"/> with the detected value.</returns>
-        public static ImageFormats GetImageFormat(string magicNumber)
+        /// <returns>A <see cref="Formats"/> with the detected value.</returns>
+        public static Formats GetImageFormat(string magicNumber)
         {
             switch (magicNumber)
             {
                 case "P1":
                 case "P4":
-                    return ImageFormats.PortableBitMap;
+                    return Formats.PortableBitMap;
                 case "P2":
                 case "P5":
-                    return ImageFormats.PortableGrayMap;
+                    return Formats.PortableGrayMap;
                 case "P3":
                 case "P6":
-                    return ImageFormats.PortablePixMap;
+                    return Formats.PortablePixMap;
                 default:
-                    return ImageFormats.Unknown;
+                    return Formats.Unknown;
             }
         }
 
@@ -127,17 +127,17 @@ namespace cgppm.Ppm
         /// </summary>
         /// <param name="imageFormat">The format of the image.</param>
         /// <returns>The appropriate value if defined, null if otherwise.</returns>
-        public static ushort? GetDefaultMaximumColorValue(ImageFormats imageFormat)
+        public static ushort? GetDefaultMaximumColorValue(Formats imageFormat)
         {
             switch (imageFormat)
             {
-                case ImageFormats.PortableBitMap:
+                case Formats.PortableBitMap:
                     return 1;
-                case ImageFormats.PortableGrayMap:
+                case Formats.PortableGrayMap:
                     return byte.MaxValue;
-                case ImageFormats.PortablePixMap:
+                case Formats.PortablePixMap:
                     return byte.MaxValue;
-                case ImageFormats.Unknown:
+                case Formats.Unknown:
                 default:
                     return null;
             }

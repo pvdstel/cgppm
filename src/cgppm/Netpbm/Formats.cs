@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cgppm.Ppm
+namespace cgppm.Netpbm
 {
-    public enum ImageFormats : int
+    public enum Formats : int
     {
         Unknown,
         PortableBitMap,

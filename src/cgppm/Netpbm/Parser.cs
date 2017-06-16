@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cgppm.Ppm
+namespace cgppm.Netpbm
 {
-    public class PpmParser
+    public class Parser
     {
         /// <summary>
         /// Reads the PBM image data from the stream.
         /// </summary>
         /// <param name="stream">The stream to read from.</param>
         /// <param name="detectMaximumColorValue">Whether the maximum color value should be detected automatically.</param>
-        /// <returns>A <see cref="RawPpmImage"/> containing the image data.</returns>
-        public RawPpmImage Read(Stream stream, bool detectMaximumColorValue = false)
+        /// <returns>A <see cref="RawImage"/> containing the image data.</returns>
+        public RawImage Read(Stream stream, bool detectMaximumColorValue = false)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
@@ -34,7 +34,7 @@ namespace cgppm.Ppm
                     // Detect the maxium color value if specified
                     if (detectMaximumColorValue)
                     {
-                        maxColorValue = RawPpmImage.GetDefaultMaximumColorValue(RawPpmImage.GetImageFormat(magicNumber));
+                        maxColorValue = RawImage.GetDefaultMaximumColorValue(RawImage.GetImageFormat(magicNumber));
                     }
                 }
             }
@@ -67,7 +67,7 @@ namespace cgppm.Ppm
                 imageData = ms.ToArray();
             }
 
-            return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value, imageData);
+            return new RawImage(magicNumber, width.Value, height.Value, maxColorValue.Value, imageData);
         }
 
         /// <summary>
@@ -75,8 +75,8 @@ namespace cgppm.Ppm
         /// </summary>
         /// <param name="path">The path to read the file from.</param>
         /// <param name="detectMaximumColorValue">Whether the maximum color value should be detected automatically.</param>
-        /// <returns>A <see cref="RawPpmImage"/> containing the image data.</returns>
-        public RawPpmImage Read(string path, bool detectMaximumColorValue = false)
+        /// <returns>A <see cref="RawImage"/> containing the image data.</returns>
+        public RawImage Read(string path, bool detectMaximumColorValue = false)
         {
             if (string.IsNullOrEmpty(path) || string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
 
