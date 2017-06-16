@@ -8,7 +8,6 @@
     Title="cgppm"
     Width="525"
     Height="350"
-    Loaded="Window_Loaded"
     mc:Ignorable="d">
     <Grid />
 </Window>
