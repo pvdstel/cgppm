@@ -16,13 +16,21 @@ using System.Windows.Shapes;
 namespace cgppm
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ImageViewer.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ImageViewer : Window
     {
-        public MainWindow()
+        private BitmapSource _bitmapSource;
+
+        public ImageViewer()
         {
             InitializeComponent();
+        }
+
+        public void SetBitmapSource(BitmapSource bitmapSource)
+        {
+            _bitmapSource = bitmapSource;
+            DataContext = _bitmapSource;
         }
     }
 }
