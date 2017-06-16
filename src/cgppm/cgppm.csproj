@@ -58,8 +58,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EntryPoint.cs" />
-    <Compile Include="Ppm\ImageFormats.cs" />
-    <Compile Include="Ppm\RawPpmImage.cs" />
+    <Compile Include="Netpbm\Formats.cs" />
+    <Compile Include="Netpbm\RawImage.cs" />
     <Compile Include="Utilities.cs" />
     <Page Include="ImageViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -75,7 +75,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ppm\PpmParser.cs" />
+    <Compile Include="Netpbm\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

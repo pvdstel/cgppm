@@ -1,4 +1,4 @@
-﻿using cgppm.Ppm;
+﻿using cgppm.Netpbm;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,8 +17,8 @@ namespace cgppm
             switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1));
             files = args.Where(s => File.Exists(s));
 
-            PpmParser parser = new PpmParser();
-            List<RawPpmImage> rawImages = files.Select(f => parser.Read(f)).ToList();
+            Parser parser = new Parser();
+            List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
 
             Console.WriteLine(string.Format("Successfully parsed {0} files.", rawImages.Count));
         }
