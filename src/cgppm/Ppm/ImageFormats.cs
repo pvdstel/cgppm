@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cgppm.Ppm
 {
-    public enum FileTypes : int
+    public enum ImageFormats : int
     {
         Unknown,
         PortableBitMap,

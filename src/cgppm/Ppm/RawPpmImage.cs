@@ -38,7 +38,7 @@ namespace cgppm.Ppm
         private void DetermineProperties()
         {
             // warning: dumb code ahead.
-            FileType = GetFileType(MagicNumber);
+            ImageFormat = GetImageFormat(MagicNumber);
             IsBinary = GetIsBinary(MagicNumber);
         }
         #endregion
@@ -66,9 +66,9 @@ namespace cgppm.Ppm
         public ushort MaximumColorValue { get; private set; } = byte.MaxValue;
 
         /// <summary>
-        /// The file type.
+        /// The image format.
         /// </summary>
-        public FileTypes FileType { get; private set; } = FileTypes.Unknown;
+        public ImageFormats ImageFormat { get; private set; } = ImageFormats.Unknown;
 
         /// <summary>
         /// Whether this image is in binary format.
@@ -84,30 +84,30 @@ namespace cgppm.Ppm
         }
 
         /// <summary>
-        /// Gets the file type from the given magic number.
+        /// Gets the iamge format from the given magic number.
         /// </summary>
         /// <param name="magicNumber">The magic number.</param>
-        /// <returns>A <see cref="FileTypes"/> with the detected value.</returns>
-        public static FileTypes GetFileType(string magicNumber)
+        /// <returns>A <see cref="ImageFormats"/> with the detected value.</returns>
+        public static ImageFormats GetImageFormat(string magicNumber)
         {
             switch (magicNumber)
             {
                 case "P1":
                 case "P4":
-                    return FileTypes.PortableBitMap;
+                    return ImageFormats.PortableBitMap;
                 case "P2":
                 case "P5":
-                    return FileTypes.PortableGrayMap;
+                    return ImageFormats.PortableGrayMap;
                 case "P3":
                 case "P6":
-                    return FileTypes.PortablePixMap;
+                    return ImageFormats.PortablePixMap;
                 default:
-                    return FileTypes.Unknown;
+                    return ImageFormats.Unknown;
             }
         }
 
         /// <summary>
-        /// Gets whether the magic number indicates a binary file type.
+        /// Gets whether the magic number indicates a binary format.
         /// </summary>
         /// <param name="magicNumber">A magic number.</param>
         /// <returns>A <see cref="bool"/> indicating whether the magic number represents a binary format.</returns>
@@ -119,19 +119,19 @@ namespace cgppm.Ppm
         /// <summary>
         /// Gets the default maximum color value as defined in the specification.
         /// </summary>
-        /// <param name="fileType">The file type of the format.</param>
+        /// <param name="imageFormat">The format of the image.</param>
         /// <returns>The appropriate value if defined, null if otherwise.</returns>
-        public static ushort? GetDefaultMaximumColorValue(FileTypes fileType)
+        public static ushort? GetDefaultMaximumColorValue(ImageFormats imageFormat)
         {
-            switch (fileType)
+            switch (imageFormat)
             {
-                case FileTypes.PortableBitMap:
+                case ImageFormats.PortableBitMap:
                     return 1;
-                case FileTypes.PortableGrayMap:
+                case ImageFormats.PortableGrayMap:
                     return byte.MaxValue;
-                case FileTypes.PortablePixMap:
+                case ImageFormats.PortablePixMap:
                     return byte.MaxValue;
-                case FileTypes.Unknown:
+                case ImageFormats.Unknown:
                 default:
                     return null;
             }

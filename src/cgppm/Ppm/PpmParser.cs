@@ -36,7 +36,7 @@ namespace cgppm.Ppm
                         // Detect the maxium color value if specified
                         if (detectMaximumColorValue)
                         {
-                            maxColorValue = RawPpmImage.GetDefaultMaximumColorValue(RawPpmImage.GetFileType(magicNumber));
+                            maxColorValue = RawPpmImage.GetDefaultMaximumColorValue(RawPpmImage.GetImageFormat(magicNumber));
                         }
                     }
                 }
