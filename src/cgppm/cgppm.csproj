@@ -60,6 +60,7 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Ppm\ImageFormats.cs" />
     <Compile Include="Ppm\RawPpmImage.cs" />
+    <Compile Include="Utilities.cs" />
     <Page Include="ImageViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
