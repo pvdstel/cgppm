@@ -15,6 +15,9 @@ namespace cgppm
         {
             switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1));
             files = args.Where(s => File.Exists(s));
+
+            Ppm.PpmParser parser = new Ppm.PpmParser();
+            var rawImages = files.Select(f => parser.Read(f));
         }
     }
 }

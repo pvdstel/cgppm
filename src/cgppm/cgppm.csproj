@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EntryPoint.cs" />
+    <Compile Include="Ppm\FileTypes.cs" />
     <Compile Include="Ppm\RawPpmImage.cs" />
     <Page Include="ImageViewer.xaml">
       <Generator>MSBuild:Compile</Generator>

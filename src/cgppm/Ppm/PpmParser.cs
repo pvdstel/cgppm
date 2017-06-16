@@ -32,7 +32,7 @@ namespace cgppm.Ppm
                 maxColorValue = short.Parse(sr.ReadLine());
             }
 
-            return new RawPpmImage();
+            return new RawPpmImage(magicNumber, width, height, maxColorValue);
         }
 
         public RawPpmImage Read(string path)
