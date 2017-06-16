@@ -33,26 +33,8 @@ namespace cgppm.Ppm
         private void DetermineProperties()
         {
             // warning: dumb code ahead.
-            switch (MagicNumber)
-            {
-                case "P1":
-                case "P4":
-                    FileType = FileTypes.PortableBitMap;
-                    break;
-                case "P2":
-                case "P5":
-                    FileType = FileTypes.PortableGrayMap;
-                    break;
-                case "P3":
-                case "P6":
-                    FileType = FileTypes.PortablePixMap;
-                    break;
-                default:
-                    FileType = FileTypes.Unknown;
-                    break;
-            }
-
-            IsBinary = (MagicNumber == "P4") || (MagicNumber == "P5") || (MagicNumber == "P6");
+            FileType = GetFileType(MagicNumber);
+            IsBinary = GetIsBinary(MagicNumber)
         }
         #endregion
 
@@ -94,6 +76,39 @@ namespace cgppm.Ppm
         public override string ToString()
         {
             return string.Format(nameof(RawPpmImage) + "({0}, {1], {2}, {3}, length)", MagicNumber, Width, Height, MaximumColorValue);
+        }
+
+        /// <summary>
+        /// Gets the file type from the given magic number.
+        /// </summary>
+        /// <param name="magicNumber">The magic number.</param>
+        /// <returns>A <see cref="FileTypes"/> with the detected value.</returns>
+        public static FileTypes GetFileType(string magicNumber)
+        {
+            switch (magicNumber)
+            {
+                case "P1":
+                case "P4":
+                    return FileTypes.PortableBitMap;
+                case "P2":
+                case "P5":
+                    return FileTypes.PortableGrayMap;
+                case "P3":
+                case "P6":
+                    return FileTypes.PortablePixMap;
+                default:
+                    return FileTypes.Unknown;
+            }
+        }
+
+        /// <summary>
+        /// Gets whether the magic number indicates a binary file type.
+        /// </summary>
+        /// <param name="magicNumber">A magic number.</param>
+        /// <returns>A <see cref="bool"/> indicating whether the magic number represents a binary format.</returns>
+        public static bool GetIsBinary(string magicNumber)
+        {
+            return (magicNumber == "P4") || (magicNumber == "P5") || (magicNumber == "P6");
         }
         #endregion
     }

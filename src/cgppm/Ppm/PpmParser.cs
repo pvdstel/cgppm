@@ -18,11 +18,15 @@ namespace cgppm.Ppm
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
-            string magicNumber;
-            int width, height;
-            short maxColorValue = byte.MaxValue;
+            string magicNumber = null;
+            int? width, height;
+            short? maxColorValue = byte.MaxValue;
+
             using (StreamReader sr = new StreamReader(stream))
             {
+                if (magicNumber == null)
+                  stream.cop
+
                 magicNumber = sr.ReadLine();
 
                 string[] sizes = sr.ReadLine().Split(' ');
