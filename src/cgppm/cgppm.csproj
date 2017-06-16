@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ImageConverter.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Netpbm\Formats.cs" />
     <Compile Include="Netpbm\NormalizedImage.cs" />
