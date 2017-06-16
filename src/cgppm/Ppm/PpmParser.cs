@@ -22,6 +22,7 @@ namespace cgppm.Ppm
             string magicNumber = null;
             int? width = null, height = null;
             ushort? maxColorValue = null;
+            byte[] imageData;
 
             // Find image properties
             using (StreamReader sr = new StreamReader(stream))
@@ -61,14 +62,14 @@ namespace cgppm.Ppm
                     }
 
                 }
-            }
 
-            // Get the image data
-            byte[] imageData;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                stream.CopyTo(ms);
-                imageData = ms.GetBuffer();
+                // Get the image data
+                // This needs to be in here because disposing of the stream reader will also close the stream
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    imageData = ms.GetBuffer();
+                }
             }
 
             return new RawPpmImage(magicNumber, width.Value, height.Value, maxColorValue.Value, imageData);
