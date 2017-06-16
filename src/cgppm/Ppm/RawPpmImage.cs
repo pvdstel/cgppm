@@ -11,6 +11,11 @@ namespace cgppm.Ppm
     /// </summary>
     public class RawPpmImage
     {
+        #region Constants
+
+        public const ushort DefaultMaximumColorValue = ushort.MaxValue;
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -20,7 +25,7 @@ namespace cgppm.Ppm
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="maximumColorValue">The maximum color value of the image.</param>
-        public RawPpmImage(string magicNumber, int width, int height, short maximumColorValue)
+        public RawPpmImage(string magicNumber, int width, int height, ushort maximumColorValue)
         {
             MagicNumber = magicNumber;
             Width = width;
@@ -34,7 +39,7 @@ namespace cgppm.Ppm
         {
             // warning: dumb code ahead.
             FileType = GetFileType(MagicNumber);
-            IsBinary = GetIsBinary(MagicNumber)
+            IsBinary = GetIsBinary(MagicNumber);
         }
         #endregion
 
@@ -58,7 +63,7 @@ namespace cgppm.Ppm
         /// <summary>
         /// The maximum color value of the image. The default value is the highest possible value for a byte.
         /// </summary>
-        public short MaximumColorValue { get; private set; } = byte.MaxValue;
+        public ushort MaximumColorValue { get; private set; } = byte.MaxValue;
 
         /// <summary>
         /// The file type.
@@ -71,7 +76,7 @@ namespace cgppm.Ppm
         public bool IsBinary { get; private set; }
         #endregion
 
-        #region Utility
+        #region Methods
 
         public override string ToString()
         {
@@ -109,6 +114,27 @@ namespace cgppm.Ppm
         public static bool GetIsBinary(string magicNumber)
         {
             return (magicNumber == "P4") || (magicNumber == "P5") || (magicNumber == "P6");
+        }
+
+        /// <summary>
+        /// Gets the default maximum color value as defined in the specification.
+        /// </summary>
+        /// <param name="fileType">The file type of the format.</param>
+        /// <returns>The appropriate value if defined, null if otherwise.</returns>
+        public static ushort? GetDefaultMaximumColorValue(FileTypes fileType)
+        {
+            switch (fileType)
+            {
+                case FileTypes.PortableBitMap:
+                    return 1;
+                case FileTypes.PortableGrayMap:
+                    return byte.MaxValue;
+                case FileTypes.PortablePixMap:
+                    return byte.MaxValue;
+                case FileTypes.Unknown:
+                default:
+                    return null;
+            }
         }
         #endregion
     }
