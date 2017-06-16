@@ -86,7 +86,7 @@ namespace cgppm.Netpbm
 
         public override string ToString()
         {
-            return string.Format(nameof(RawImage) + "({0}, {1}, {2}, {3}, length)", MagicNumber, Width, Height, MaximumColorValue);
+            return string.Format(nameof(RawImage) + "({0}, {1}, {2}, {3}, {4})", MagicNumber, Width, Height, MaximumColorValue, ImageData.Length);
         }
 
         /// <summary>
