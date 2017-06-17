@@ -13,20 +13,31 @@ namespace cgppm
         [STAThread]
         public static void Main(string[] args)
         {
+            Console.WriteLine("Starting...");
+
+            Console.Write("Parsing arguments... ");
             List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1)).ToList();
             List<string> files = args.Where(s => File.Exists(s)).ToList();
+            Console.WriteLine("done.");
 
+            Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
             List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
+            Console.WriteLine("done.");
 
             if (switches.Contains("8") || switches.Contains("8bit") || switches.Contains("8-bit"))
             {
+                Console.Write("Generating 8-bit images... ");
                 _convertedImages.AddRange(Convert8Bit(rawImages));
+                Console.WriteLine("done.");
             }
 
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
             {
+                Console.WriteLine("Starting UI...");
+                Console.Write("Waiting for all UI windows to close...");
                 UI.App.Main();
+                Console.WriteLine("UI closed.");
             }
         }
 
