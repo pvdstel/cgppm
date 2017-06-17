@@ -8,20 +8,45 @@ namespace cgppm
 {
     public class Launcher
     {
-        private static IEnumerable<string> switches;
-        private static IEnumerable<string> files;
+        private static List<Image> _convertedImages = new List<Image>();
 
         [STAThread]
         public static void Main(string[] args)
         {
-            switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1));
-            files = args.Where(s => File.Exists(s));
+            List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1)).ToList();
+            List<string> files = args.Where(s => File.Exists(s)).ToList();
 
             Parser parser = new Parser();
-            IEnumerable<RawImage> rawImages = files.Select(f => parser.Read(f));
-            IEnumerable<NormalizedImage> normalizedImages = rawImages.Select(ri => new NormalizedImage(ri));
-            
-            Console.WriteLine(string.Format("Successfully parsed {0} files.", normalizedImages.Count()));
+            List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
+
+            if (switches.Contains("8") || switches.Contains("8bit") || switches.Contains("8-bit"))
+            {
+                _convertedImages.AddRange(Convert8Bit(rawImages));
+            }
+
+            if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
+            {
+                UI.App.Main();
+            }
+        }
+
+        public static List<Image> ConvertedImages
+        {
+            get
+            {
+                return _convertedImages;
+            }
+        }
+
+        private static List<Image> Convert8Bit(List<RawImage> rawImages)
+        {
+            List<Image> images = new List<Image>();
+            ImageConverter ic = new ImageConverter();
+            foreach (RawImage image in rawImages)
+            {
+                images.Add(new Image(ic.ConvertNetpbmTo8Bit(image), "8 bit image"));
+            }
+            return images;
         }
     }
 }
