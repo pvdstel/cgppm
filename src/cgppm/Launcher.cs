@@ -13,7 +13,7 @@ namespace cgppm
         [STAThread]
         public static void Main(string[] args)
         {
-            Console.WriteLine("Starting...");
+            Console.WriteLine("Starting cgppm...");
 
             // Gather input data
             Console.Write("Parsing arguments... ");
@@ -103,7 +103,7 @@ namespace cgppm
                 Console.WriteLine("UI closed.");
             }
 
-            Console.WriteLine("Exiting...");
+            Console.WriteLine("Exiting cgppm...");
         }
 
         /// <summary>
