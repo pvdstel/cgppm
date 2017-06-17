@@ -31,13 +31,6 @@
                 Click="saveJpgButton_Click"
                 Content="Save JPG image" />
             <Button
-                x:Name="saveGifButton"
-                MinWidth="75"
-                Margin="10,10,0,0"
-                Padding="5,1"
-                Click="saveGifButton_Click"
-                Content="Save GIF image" />
-            <Button
                 x:Name="saveBmpButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
