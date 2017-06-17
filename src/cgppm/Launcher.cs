@@ -20,6 +20,12 @@ namespace cgppm
             List<string> files = args.Where(s => File.Exists(s)).ToList();
             Console.WriteLine("done.");
 
+            if (files.Count == 0)
+            {
+                Console.WriteLine("No files were found. Specify some files and try again.");
+                return;
+            }
+
             Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
             List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
@@ -35,10 +41,12 @@ namespace cgppm
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
             {
                 Console.WriteLine("Starting UI...");
-                Console.Write("Waiting for all UI windows to close...");
+                Console.Write("Waiting for all UI windows to close... ");
                 UI.App.Main();
                 Console.WriteLine("UI closed.");
             }
+
+            Console.WriteLine("Exiting...");
         }
 
         public static List<Image> ConvertedImages
