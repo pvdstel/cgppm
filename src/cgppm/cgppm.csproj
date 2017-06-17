@@ -56,25 +56,26 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <ApplicationDefinition Include="UI\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Image.cs" />
     <Compile Include="ImageConverter.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Netpbm\Formats.cs" />
     <Compile Include="Netpbm\NormalizedImage.cs" />
     <Compile Include="Netpbm\RawImage.cs" />
     <Compile Include="Utilities.cs" />
-    <Page Include="ImageViewer.xaml">
+    <Page Include="UI\ImageViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
+    <Compile Include="UI\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ImageViewer.xaml.cs">
+    <Compile Include="UI\ImageViewer.xaml.cs">
       <DependentUpon>ImageViewer.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

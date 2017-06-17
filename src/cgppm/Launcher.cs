@@ -8,6 +8,7 @@ namespace cgppm
 {
     public class Launcher
     {
+        private static List<Image> _convertedImages = new List<Image>();
 
         [STAThread]
         public static void Main(string[] args)
@@ -18,15 +19,34 @@ namespace cgppm
             Parser parser = new Parser();
             List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
 
+            if (switches.Contains("8") || switches.Contains("8bit") || switches.Contains("8-bit"))
+            {
+                _convertedImages.AddRange(Convert8Bit(rawImages));
+            }
+
+            if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
+            {
+                UI.App.Main();
+            }
+        }
+
+        public static List<Image> ConvertedImages
+        {
+            get
+            {
+                return _convertedImages;
+            }
+        }
+
+        private static List<Image> Convert8Bit(List<RawImage> rawImages)
+        {
+            List<Image> images = new List<Image>();
             ImageConverter ic = new ImageConverter();
             foreach (RawImage image in rawImages)
             {
-                ImageViewer iv = new ImageViewer();
-                iv.SetBitmapSource(ic.ConvertNetpbmTo8Bit(image));
-                iv.Show();
+                images.Add(new Image(ic.ConvertNetpbmTo8Bit(image), "8 bit image"));
             }
-
-            App.Main();
+            return images;
         }
     }
 }

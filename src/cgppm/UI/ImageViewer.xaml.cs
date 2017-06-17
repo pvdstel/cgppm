@@ -13,24 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace cgppm
+namespace cgppm.UI
 {
     /// <summary>
     /// Interaction logic for ImageViewer.xaml
     /// </summary>
     public partial class ImageViewer : Window
     {
-        private BitmapSource _bitmapSource;
+        private Image _image;
 
         public ImageViewer()
         {
             InitializeComponent();
         }
 
-        public void SetBitmapSource(BitmapSource bitmapSource)
+        public void SetImage(Image image)
         {
-            _bitmapSource = bitmapSource;
-            DataContext = _bitmapSource;
+            _image = image;
+            DataContext = _image;
         }
     }
 }
