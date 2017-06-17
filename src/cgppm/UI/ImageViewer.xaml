@@ -8,7 +8,7 @@
     Title="{Binding Name, FallbackValue=cgppm, StringFormat=cgppm - \{0\}}"
     Width="800"
     Height="600"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,29 +23,33 @@
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="savePngButton_Click"
-                Content="Save PNG image" />
+                Click="savePngButton_Click">
+                <AccessText>Save as _PNG</AccessText>
+            </Button>
             <Button
                 x:Name="saveJpgButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="saveJpgButton_Click"
-                Content="Save JPG image" />
+                Click="saveJpgButton_Click">
+                <AccessText>Save as _JPG</AccessText>
+            </Button>
             <Button
                 x:Name="saveBmpButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="saveBmpButton_Click"
-                Content="Save BMP image" />
+                Click="saveBmpButton_Click">
+                <AccessText>Save as _BMP</AccessText>
+            </Button>
             <Button
                 x:Name="exitButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="exitButton_Click"
-                Content="Exit" />
+                Click="exitButton_Click">
+                <AccessText>_Exit</AccessText>
+            </Button>
         </WrapPanel>
         <Rectangle
             Grid.Row="2"
