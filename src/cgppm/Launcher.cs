@@ -84,7 +84,7 @@ namespace cgppm
             ImageConverter ic = new ImageConverter();
             foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
-                string name = string.Format("{0} (8)", Path.GetFileNameWithoutExtension(rawImage.Key));
+                string name = string.Format("{0}-8bit", Path.GetFileNameWithoutExtension(rawImage.Key));
                 images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (8-bit)", rawImage.Key)));
             }
             return images;
@@ -96,7 +96,7 @@ namespace cgppm
             ImageConverter ic = new ImageConverter();
             foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
-                string name = string.Format("{0} (16)", Path.GetFileNameWithoutExtension(rawImage.Key));
+                string name = string.Format("{0}-16bit", Path.GetFileNameWithoutExtension(rawImage.Key));
                 images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (16-bit)", rawImage.Key)));
             }
             return images;

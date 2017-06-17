@@ -13,9 +13,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Orientation="Horizontal">
+        <TextBlock Margin="10,10,0,0" Text="{Binding Name, FallbackValue=Name}" />
+        <WrapPanel Grid.Row="1" Orientation="Horizontal">
             <Button
                 x:Name="savePngButton"
                 MinWidth="75"
@@ -46,12 +48,12 @@
                 Content="Exit" />
         </WrapPanel>
         <Rectangle
-            Grid.Row="1"
+            Grid.Row="2"
             Height="1"
             Margin="10,10,10,0"
             Fill="Gray" />
         <Image
-            Grid.Row="2"
+            Grid.Row="3"
             Margin="10"
             Source="{Binding BitmapSource}"
             StretchDirection="DownOnly" />
