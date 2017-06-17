@@ -1,0 +1,26 @@
+cgppm
+	Convert any Netpbm file to a more modern image format.
+
+Usage:
+	Specify any Netpbm file as a command line argument. These files will be parsed.
+	
+	Use command line options to access different functionality.
+
+Options:
+	-8, -8bit, -8-bit: converts the specified files to an 8-bit image.
+
+	-16, -16bit, -16-bit: converts the specified files to a 16-bit image.
+
+	-target:<directory>, -target-dir:<directory>, -dir:<directory>: writes output files to <directory>. If left empty the directory from the source file is used instead.
+
+	-save:png, -save-png, -savepng: saves the specified files in PNG format.
+	-save:jpg, -save-jpg, -savejpg: saves the specified files in JPG format. JPEG is also accepted instead of JPG.
+	-save:bmp, -save-bmp, -savebmp: saves the specified files in BMP format.
+
+	All format options can be used simultaneously; multiple files are created per source file.
+
+	-ui, -show, -showui, -show-ui: displays a UI for every converted image.
+
+	-?, -h, -help or no arguments: displays this help message.
+
+	Instead of hyphens (-) all options may also start with slashes (/).

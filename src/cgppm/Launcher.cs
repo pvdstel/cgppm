@@ -21,6 +21,13 @@ namespace cgppm
             List<string> files = args.Where(s => File.Exists(s)).ToList();
             Console.WriteLine("done.");
 
+            if ((files.Count == 0 && switches.Count == 0) || switches.Contains("?") || switches.Contains("h") || switches.Contains("help"))
+            {
+                Console.WriteLine();
+                Console.WriteLine(Properties.Resources.Help);
+                return;
+            }
+
             // Files count check
             if (files.Count == 0)
             {
