@@ -60,8 +60,6 @@ namespace cgppm
             int bytesPerPixel = (pixelFormat.BitsPerPixel + 7) / 8;
             int stride = bytesPerPixel * rawImage.Width;
 
-            int ones = rawImage.ImageData.Count(u => u == 1);
-
             return BitmapSource.Create(rawImage.Width, rawImage.Height,
                 _dpiX, _dpiY, pixelFormat, null, imageData, stride);
         }
@@ -88,8 +86,6 @@ namespace cgppm
 
             int bytesPerPixel = (pixelFormat.BitsPerPixel + 7) / 8;
             int stride = bytesPerPixel * rawImage.Width;
-
-            int ones = rawImage.ImageData.Count(u => u == 1);
 
             return BitmapSource.Create(rawImage.Width, rawImage.Height,
                 _dpiX, _dpiY, pixelFormat, null, imageData, stride);
