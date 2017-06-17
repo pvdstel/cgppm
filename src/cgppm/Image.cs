@@ -17,12 +17,12 @@ namespace cgppm
         /// </summary>
         /// <param name="name">The name of the image.</param>
         /// <param name="bitmapSource">The bitmap source of the image.</param>
-        /// <param name="tag">The tag of the image.</param>
-        public Image(string name, BitmapSource bitmapSource, string tag)
+        /// <param name="path">The path of the image.</param>
+        public Image(string name, string path, BitmapSource bitmapSource)
         {
             Name = name;
             BitmapSource = bitmapSource;
-            Tag = tag;
+            Path = path;
         }
 
         /// <summary>
@@ -31,13 +31,13 @@ namespace cgppm
         public string Name { get; private set; }
 
         /// <summary>
+        /// The path of the image.
+        /// </summary>
+        public string Path { get; private set; }
+
+        /// <summary>
         /// The bitmap source of the image.
         /// </summary>
         public BitmapSource BitmapSource { get; private set; }
-
-        /// <summary>
-        /// The tag of the image.
-        /// </summary>
-        public string Tag { get; private set; } = string.Empty;
     }
 }

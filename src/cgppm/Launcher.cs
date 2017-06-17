@@ -55,6 +55,8 @@ namespace cgppm
                 Console.WriteLine("done.");
             }
 
+            //
+
             // The option for showing a ui
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
             {
@@ -85,7 +87,7 @@ namespace cgppm
             foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
                 string name = string.Format("{0}-8bit", Path.GetFileNameWithoutExtension(rawImage.Key));
-                images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (8-bit)", rawImage.Key)));
+                images.Add(new Image(name, Path.GetDirectoryName(rawImage.Key), ic.ConvertNetpbmTo8Bit(rawImage.Value)));
             }
             return images;
         }
@@ -97,7 +99,7 @@ namespace cgppm
             foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
                 string name = string.Format("{0}-16bit", Path.GetFileNameWithoutExtension(rawImage.Key));
-                images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (16-bit)", rawImage.Key)));
+                images.Add(new Image(name, Path.GetDirectoryName(rawImage.Key), ic.ConvertNetpbmTo8Bit(rawImage.Value)));
             }
             return images;
         }
