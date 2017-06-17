@@ -37,6 +37,12 @@ namespace cgppm
                 _convertedImages.AddRange(Convert8Bit(rawImages));
                 Console.WriteLine("done.");
             }
+            if (switches.Contains("16") || switches.Contains("16bit") || switches.Contains("16-bit"))
+            {
+                Console.Write("Generating 16-bit images... ");
+                _convertedImages.AddRange(Convert16Bit(rawImages));
+                Console.WriteLine("done.");
+            }
 
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
             {
@@ -64,6 +70,17 @@ namespace cgppm
             foreach (RawImage image in rawImages)
             {
                 images.Add(new Image(ic.ConvertNetpbmTo8Bit(image), "8 bit image"));
+            }
+            return images;
+        }
+
+        private static List<Image> Convert16Bit(List<RawImage> rawImages)
+        {
+            List<Image> images = new List<Image>();
+            ImageConverter ic = new ImageConverter();
+            foreach (RawImage image in rawImages)
+            {
+                images.Add(new Image(ic.ConvertNetpbmTo16Bit(image), "16 bit image"));
             }
             return images;
         }
