@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +33,42 @@ namespace cgppm.UI
         {
             _image = image;
             DataContext = _image;
+        }
+
+        private void exitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void savePngButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "PNG image|.png";
+            if (sfd.ShowDialog() == true)
+            {
+                _image.BitmapSource.SaveBitmapSourceAsPng(sfd.FileName);
+            }
+        }
+
+        private void saveJpgButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "JPG image|.jpg";
+            if (sfd.ShowDialog() == true)
+            {
+                _image.BitmapSource.SaveBitmapSourceAsJpg(sfd.FileName);
+            }
+        }
+
+        private void saveBmpButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "BMP image|.bmp";
+            if (sfd.ShowDialog() == true)
+            {
+                _image.BitmapSource.SaveBitmapSourceAsBmp(sfd.FileName);
+            }
+
         }
     }
 }

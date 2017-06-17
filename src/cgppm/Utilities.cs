@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace cgppm
 {
@@ -42,6 +43,66 @@ namespace cgppm
                 nextByte = stream.ReadByte();
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Saves a <see cref="BitmapSource"/> as a PNG file to the specified location.
+        /// </summary>
+        /// <param name="bitmapSource">The <see cref="BitmapSource"/></param>
+        /// <param name="path">The path to save to.</param>
+        public static void SaveBitmapSourceAsPng(this BitmapSource bitmapSource, string path)
+        {
+            if (bitmapSource == null) throw new ArgumentNullException(nameof(bitmapSource));
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(fs);
+            }
+        }
+
+        /// <summary>
+        /// Saves a <see cref="BitmapSource"/> as a JPG file to the specified location.
+        /// </summary>
+        /// <param name="bitmapSource">The <see cref="BitmapSource"/></param>
+        /// <param name="path">The path to save to.</param>
+        public static void SaveBitmapSourceAsJpg(this BitmapSource bitmapSource, string path)
+        {
+            if (bitmapSource == null) throw new ArgumentNullException(nameof(bitmapSource));
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                BitmapEncoder encoder = new JpegBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(fs);
+            }
+        }
+
+        /// <summary>
+        /// Saves a <see cref="BitmapSource"/> as a BMP file to the specified location.
+        /// </summary>
+        /// <param name="bitmapSource">The <see cref="BitmapSource"/></param>
+        /// <param name="path">The path to save to.</param>
+        public static void SaveBitmapSourceAsBmp(this BitmapSource bitmapSource, string path)
+        {
+            if (bitmapSource == null) throw new ArgumentNullException(nameof(bitmapSource));
+            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                BitmapEncoder encoder = new BmpBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+                encoder.Save(fs);
+            }
         }
     }
 }
