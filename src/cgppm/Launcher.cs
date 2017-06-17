@@ -17,7 +17,7 @@ namespace cgppm
 
             // Gather input data
             Console.Write("Parsing arguments... ");
-            List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1)).ToList();
+            List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1).ToLower()).ToList();
             List<string> files = args.Where(s => File.Exists(s)).ToList();
             Console.WriteLine("done.");
 
@@ -55,7 +55,30 @@ namespace cgppm
                 Console.WriteLine("done.");
             }
 
-            //
+            // Get target dir
+            string targetDir = switches.FirstOrDefault(s => s.StartsWith("target:") || s.StartsWith("target-dir:") || s.StartsWith("dir:"));
+            if (targetDir != null)
+            {
+                targetDir = targetDir.Split(new char[] { ':' }, 2)[1];
+            }
+
+            // The option for saving as PNG
+            if (switches.Contains("save:png") || switches.Contains("save-png") || switches.Contains("savepng"))
+            {
+                SavePng(_convertedImages, targetDir);
+            }
+
+            // The option for saving as jpg
+            if (switches.Contains("save:jpg") || switches.Contains("save-jpg") || switches.Contains("savejpg"))
+            {
+                SaveJpg(_convertedImages, targetDir);
+            }
+
+            // The option for saving as bmp
+            if (switches.Contains("save:bmp") || switches.Contains("save-bmp") || switches.Contains("savebmp"))
+            {
+                SaveBmp(_convertedImages, targetDir);
+            }
 
             // The option for showing a ui
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
@@ -102,6 +125,36 @@ namespace cgppm
                 images.Add(new Image(name, Path.GetDirectoryName(rawImage.Key), ic.ConvertNetpbmTo8Bit(rawImage.Value)));
             }
             return images;
+        }
+
+        private static void SavePng(IEnumerable<Image> images, string directory)
+        {
+            if (directory != null) Directory.CreateDirectory(directory);
+            foreach (Image image in images)
+            {
+                string dir = directory ?? image.Path;
+                Utilities.SaveBitmapSourceAsPng(image.BitmapSource, Path.Combine(dir, image.Name + ".png"));
+            }
+        }
+
+        private static void SaveJpg(IEnumerable<Image> images, string directory)
+        {
+            if (directory != null) Directory.CreateDirectory(directory);
+            foreach (Image image in images)
+            {
+                string dir = directory ?? image.Path;
+                Utilities.SaveBitmapSourceAsJpg(image.BitmapSource, Path.Combine(dir, image.Name + ".jpg"));
+            }
+        }
+
+        private static void SaveBmp(IEnumerable<Image> images, string directory)
+        {
+            if (directory != null) Directory.CreateDirectory(directory);
+            foreach (Image image in images)
+            {
+                string dir = directory ?? image.Path;
+                Utilities.SaveBitmapSourceAsBmp(image.BitmapSource, Path.Combine(dir, image.Name + ".bmp"));
+            }
         }
     }
 }
