@@ -15,7 +15,7 @@ namespace cgppm.Netpbm
         /// <param name="stream">The stream to read from.</param>
         /// <param name="detectMaximumColorValue">Whether the maximum color value should be detected automatically.</param>
         /// <returns>A <see cref="RawImage"/> containing the image data.</returns>
-        public RawImage Read(Stream stream, bool detectMaximumColorValue = false)
+        public RawImage Read(Stream stream, bool detectMaximumColorValue = true)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
 
