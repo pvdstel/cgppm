@@ -82,8 +82,8 @@ namespace cgppm
             // The option for saving as bmp
             if (switches.Contains("save:bmp") || switches.Contains("save-bmp") || switches.Contains("savebmp"))
             {
-                Console.Write("Saving as PNG... ");
-                SaveJpg(_convertedImages, targetDir);
+                Console.Write("Saving as BMP... ");
+                SaveBmp(_convertedImages, targetDir);
                 Console.WriteLine("done.");
             }
 
