@@ -25,7 +25,7 @@ namespace cgppm.Netpbm
         /// <param name="width">The width of the image.</param>
         /// <param name="height">The height of the image.</param>
         /// <param name="maximumColorValue">The maximum color value of the image.</param>
-        public RawImage(string magicNumber, int width, int height, ushort maximumColorValue, byte[] imageData)
+        public RawImage(string magicNumber, int width, int height, ushort maximumColorValue, ushort[] imageData)
         {
             MagicNumber = magicNumber;
             Width = width;
@@ -69,7 +69,7 @@ namespace cgppm.Netpbm
         /// <summary>
         /// The image data of this image.
         /// </summary>
-        public byte[] ImageData { get; private set; }
+        public ushort[] ImageData { get; private set; }
 
         /// <summary>
         /// The image format.

@@ -25,7 +25,7 @@ namespace cgppm
         }
 
         /// <summary>
-        /// Reads a single line of text from stream.
+        /// Reads a single line of text from a stream.
         /// </summary>
         /// <param name="stream">The stream to read from.</param>
         /// <returns>A <see cref="string"/> with the line that was read.</returns>
@@ -40,6 +40,46 @@ namespace cgppm
             while (nextByte > 0 && nextByte != LineFeed && nextByte != CarriageReturn)
             {
                 sb.Append((char)nextByte);
+                nextByte = stream.ReadByte();
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Reads a single word from a stream.
+        /// </summary>
+        /// <param name="stream">The stream to read from.</param>
+        /// <returns>A <see cref="string"/> with the word that was read.</returns>
+        public static string ReadSingleWord(this Stream stream)
+        {
+            if (stream == null) throw new ArgumentNullException(nameof(stream));
+            if (!stream.CanRead) throw new InvalidOperationException("The stream cannot be read.");
+            if (stream.Length == 0) return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            int nextByte = stream.ReadByte();
+            bool foundNonWhitespace = false;
+            while (nextByte > 0)
+            {
+                char next = (char)nextByte;
+                if (next == '#') // start of a comment, go to next line
+                {
+                    stream.ReadSingleLine();
+                    sb.Clear();
+                    foundNonWhitespace = false;
+                    nextByte = stream.ReadByte();
+                    continue;
+                }
+
+                bool isSpecialChar = char.IsWhiteSpace(next) || char.IsControl(next) || char.IsSeparator(next);
+                if (isSpecialChar && foundNonWhitespace)
+                {
+                    // End of the word, break
+                    break;
+                }
+
+                foundNonWhitespace |= !isSpecialChar;
+                sb.Append(next);
                 nextByte = stream.ReadByte();
             }
             return sb.ToString();
