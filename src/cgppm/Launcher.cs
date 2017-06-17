@@ -25,6 +25,7 @@ namespace cgppm
                 Console.WriteLine("No files were found. Specify some files and try again.");
                 return;
             }
+            Console.WriteLine(string.Format("Found {0} file(s).", files.Count));
 
             Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
