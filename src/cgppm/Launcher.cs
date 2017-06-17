@@ -32,7 +32,11 @@ namespace cgppm
             // Parse files
             Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
-            List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
+            Dictionary<string, RawImage> rawImages = new Dictionary<string, RawImage>();
+            foreach (string file in files)
+            {
+                rawImages.Add(Path.GetFullPath(file), parser.Read(file));
+            }
             Console.WriteLine("done.");
 
             // The option for generating 8 bit images
@@ -74,24 +78,26 @@ namespace cgppm
             }
         }
 
-        private static List<Image> Convert8Bit(List<RawImage> rawImages)
+        private static List<Image> Convert8Bit(Dictionary<string, RawImage> rawImages)
         {
             List<Image> images = new List<Image>();
             ImageConverter ic = new ImageConverter();
-            foreach (RawImage image in rawImages)
+            foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
-                images.Add(new Image(ic.ConvertNetpbmTo8Bit(image), "8 bit image"));
+                string name = string.Format("{0} (8)", Path.GetFileNameWithoutExtension(rawImage.Key));
+                images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (8-bit)", rawImage.Key)));
             }
             return images;
         }
 
-        private static List<Image> Convert16Bit(List<RawImage> rawImages)
+        private static List<Image> Convert16Bit(Dictionary<string, RawImage> rawImages)
         {
             List<Image> images = new List<Image>();
             ImageConverter ic = new ImageConverter();
-            foreach (RawImage image in rawImages)
+            foreach (KeyValuePair<string, RawImage> rawImage in rawImages)
             {
-                images.Add(new Image(ic.ConvertNetpbmTo16Bit(image), "16 bit image"));
+                string name = string.Format("{0} (16)", Path.GetFileNameWithoutExtension(rawImage.Key));
+                images.Add(new Image(name, ic.ConvertNetpbmTo8Bit(rawImage.Value), string.Format("{0} (16-bit)", rawImage.Key)));
             }
             return images;
         }

@@ -15,13 +15,20 @@ namespace cgppm
         /// <summary>
         /// Initializes a new instance of the <see cref="Image"/> class.
         /// </summary>
+        /// <param name="name">The name of the image.</param>
         /// <param name="bitmapSource">The bitmap source of the image.</param>
         /// <param name="tag">The tag of the image.</param>
-        public Image(BitmapSource bitmapSource, string tag)
+        public Image(string name, BitmapSource bitmapSource, string tag)
         {
+            Name = name;
             BitmapSource = bitmapSource;
             Tag = tag;
         }
+
+        /// <summary>
+        /// The name of the image.
+        /// </summary>
+        public string Name { get; private set; }
 
         /// <summary>
         /// The bitmap source of the image.
