@@ -15,11 +15,13 @@ namespace cgppm
         {
             Console.WriteLine("Starting...");
 
+            // Gather input data
             Console.Write("Parsing arguments... ");
             List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1)).ToList();
             List<string> files = args.Where(s => File.Exists(s)).ToList();
             Console.WriteLine("done.");
 
+            // Files count check
             if (files.Count == 0)
             {
                 Console.WriteLine("No files were found. Specify some files and try again.");
@@ -27,17 +29,21 @@ namespace cgppm
             }
             Console.WriteLine(string.Format("Found {0} file(s).", files.Count));
 
+            // Parse files
             Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
             List<RawImage> rawImages = files.Select(f => parser.Read(f)).ToList();
             Console.WriteLine("done.");
 
+            // The option for generating 8 bit images
             if (switches.Contains("8") || switches.Contains("8bit") || switches.Contains("8-bit"))
             {
                 Console.Write("Generating 8-bit images... ");
                 _convertedImages.AddRange(Convert8Bit(rawImages));
                 Console.WriteLine("done.");
             }
+
+            // The option for generating 16 bit images
             if (switches.Contains("16") || switches.Contains("16bit") || switches.Contains("16-bit"))
             {
                 Console.Write("Generating 16-bit images... ");
@@ -45,6 +51,7 @@ namespace cgppm
                 Console.WriteLine("done.");
             }
 
+            // The option for showing a ui
             if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
             {
                 Console.WriteLine("Starting UI...");
@@ -56,6 +63,9 @@ namespace cgppm
             Console.WriteLine("Exiting...");
         }
 
+        /// <summary>
+        /// Gets the result of image conversion.
+        /// </summary>
         public static List<Image> ConvertedImages
         {
             get
