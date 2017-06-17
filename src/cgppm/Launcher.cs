@@ -65,19 +65,26 @@ namespace cgppm
             // The option for saving as PNG
             if (switches.Contains("save:png") || switches.Contains("save-png") || switches.Contains("savepng"))
             {
+                Console.Write("Saving as PNG... ");
                 SavePng(_convertedImages, targetDir);
+                Console.WriteLine("done.");
             }
 
             // The option for saving as jpg
-            if (switches.Contains("save:jpg") || switches.Contains("save-jpg") || switches.Contains("savejpg"))
+            if (switches.Contains("save:jpg") || switches.Contains("save-jpg") || switches.Contains("savejpg") ||
+                switches.Contains("save:jpeg") || switches.Contains("save-jpeg") || switches.Contains("savejpeg"))
             {
+                Console.Write("Saving as JPG... ");
                 SaveJpg(_convertedImages, targetDir);
+                Console.WriteLine("done.");
             }
 
             // The option for saving as bmp
             if (switches.Contains("save:bmp") || switches.Contains("save-bmp") || switches.Contains("savebmp"))
             {
-                SaveBmp(_convertedImages, targetDir);
+                Console.Write("Saving as PNG... ");
+                SaveJpg(_convertedImages, targetDir);
+                Console.WriteLine("done.");
             }
 
             // The option for showing a ui
