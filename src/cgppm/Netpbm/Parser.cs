@@ -24,40 +24,29 @@ namespace cgppm.Netpbm
             ushort? maxColorValue = null;
             byte[] imageData;
 
-            // Detect the magic number
-            while (magicNumber == null)
+            // Get header information
+            while (width == null || height == null || maxColorValue == null || magicNumber == null)
             {
-                string nextLine = stream.ReadSingleLine();
-                if (!nextLine.IsComment())
+                if (magicNumber == null)
                 {
-                    magicNumber = nextLine;
-                    // Detect the maxium color value if specified
+                    magicNumber = stream.ReadSingleWord();
                     if (detectMaximumColorValue)
                     {
                         maxColorValue = RawImage.GetDefaultMaximumColorValue(RawImage.GetImageFormat(magicNumber));
                     }
                 }
-            }
-            // Detect the image size
-            while (!width.HasValue || !height.HasValue)
-            {
-                string nextLine = stream.ReadSingleLine();
-                if (!nextLine.IsComment())
+                else if (width == null)
                 {
-                    string[] sizes = nextLine.Split(' ');
-                    width = int.Parse(sizes[0]);
-                    height = int.Parse(sizes[1]);
+                    width = int.Parse(stream.ReadSingleWord());
                 }
-            }
-            // Detect the maximum color value
-            while (!maxColorValue.HasValue)
-            {
-                string nextLine = stream.ReadSingleLine();
-                if (!nextLine.IsComment())
+                else if (height == null)
                 {
-                    maxColorValue = ushort.Parse(nextLine);
+                    height = int.Parse(stream.ReadSingleWord());
                 }
-
+                else if (maxColorValue == null)
+                {
+                    maxColorValue = ushort.Parse(stream.ReadSingleWord());
+                }
             }
 
             // Get the image data
