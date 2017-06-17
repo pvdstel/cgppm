@@ -44,6 +44,7 @@ namespace cgppm.UI
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "PNG image|.png";
+            sfd.InitialDirectory = _image.Path;
             if (sfd.ShowDialog() == true)
             {
                 _image.BitmapSource.SaveBitmapSourceAsPng(sfd.FileName);
@@ -54,6 +55,7 @@ namespace cgppm.UI
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "JPG image|.jpg";
+            sfd.InitialDirectory = _image.Path;
             if (sfd.ShowDialog() == true)
             {
                 _image.BitmapSource.SaveBitmapSourceAsJpg(sfd.FileName);
@@ -64,11 +66,17 @@ namespace cgppm.UI
         {
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "BMP image|.bmp";
+            sfd.InitialDirectory = _image.Path;
             if (sfd.ShowDialog() == true)
             {
                 _image.BitmapSource.SaveBitmapSourceAsBmp(sfd.FileName);
             }
 
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape) Close();
         }
     }
 }

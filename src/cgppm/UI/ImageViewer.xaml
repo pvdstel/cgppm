@@ -5,53 +5,59 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:cgppm"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="{Binding Tag, FallbackValue=cgppm, StringFormat=cgppm - \{0\}}"
+    Title="{Binding Name, FallbackValue=cgppm, StringFormat=cgppm - \{0\}}"
     Width="800"
     Height="600"
-    mc:Ignorable="d">
+    mc:Ignorable="d" PreviewKeyDown="Window_PreviewKeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Orientation="Horizontal">
+        <TextBlock Margin="10,10,0,0" Text="{Binding Name, FallbackValue=Name}" />
+        <WrapPanel Grid.Row="1" Orientation="Horizontal">
             <Button
                 x:Name="savePngButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="savePngButton_Click"
-                Content="Save PNG image" />
+                Click="savePngButton_Click">
+                <AccessText>Save as _PNG</AccessText>
+            </Button>
             <Button
                 x:Name="saveJpgButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="saveJpgButton_Click"
-                Content="Save JPG image" />
+                Click="saveJpgButton_Click">
+                <AccessText>Save as _JPG</AccessText>
+            </Button>
             <Button
                 x:Name="saveBmpButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="saveBmpButton_Click"
-                Content="Save BMP image" />
+                Click="saveBmpButton_Click">
+                <AccessText>Save as _BMP</AccessText>
+            </Button>
             <Button
                 x:Name="exitButton"
                 MinWidth="75"
                 Margin="10,10,0,0"
                 Padding="5,1"
-                Click="exitButton_Click"
-                Content="Exit" />
+                Click="exitButton_Click">
+                <AccessText>_Exit</AccessText>
+            </Button>
         </WrapPanel>
         <Rectangle
-            Grid.Row="1"
+            Grid.Row="2"
             Height="1"
             Margin="10,10,10,0"
             Fill="Gray" />
         <Image
-            Grid.Row="2"
+            Grid.Row="3"
             Margin="10"
             Source="{Binding BitmapSource}"
             StretchDirection="DownOnly" />
