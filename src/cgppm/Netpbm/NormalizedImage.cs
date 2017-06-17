@@ -77,12 +77,12 @@ namespace cgppm.Netpbm
         /// </summary>
         /// <param name="multiplier">The number to multiply all normalized values with.</param>
         /// <returns>A <see cref="short[]"/> with multiplied normalized data.</returns>
-        public short[] GetAsInt16Array(short multiplier)
+        public ushort[] GetAsUInt16Array(ushort multiplier)
         {
-            short[] result = new short[ImageData.Length];
+            ushort[] result = new ushort[ImageData.Length];
             for (int i = 0; i < ImageData.Length; i++)
             {
-                result[i] = (short)(ImageData[i] * multiplier);
+                result[i] = (ushort)(ImageData[i] * multiplier);
             }
             return result;
         }
@@ -123,7 +123,7 @@ namespace cgppm.Netpbm
         /// <param name="rawData">The raw image data.</param>
         /// <param name="maximumColorValue">The maximum color value.</param>
         /// <returns></returns>
-        public static double[] NormalizeImageData(byte[] rawData, ushort maximumColorValue)
+        public static double[] NormalizeImageData(ushort[] rawData, ushort maximumColorValue)
         {
             bool useDoubleBytes = maximumColorValue > byte.MaxValue;
             double tempMaximumColorValue = maximumColorValue;
