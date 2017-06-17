@@ -15,6 +15,11 @@ namespace cgppm.UI
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            if (Launcher.ConvertedImages.Count == 0)
+            {
+                App.Current.Shutdown();
+            }
+
             ImageConverter ic = new ImageConverter();
             foreach (Image image in Launcher.ConvertedImages)
             {
