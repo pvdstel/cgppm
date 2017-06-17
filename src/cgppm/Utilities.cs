@@ -62,12 +62,22 @@ namespace cgppm
             while (nextByte > 0)
             {
                 char next = (char)nextByte;
+                if (next == '#') // start of a comment, go to next line
+                {
+                    stream.ReadSingleLine();
+                    sb.Clear();
+                    foundNonWhitespace = false;
+                    nextByte = stream.ReadByte();
+                    continue;
+                }
+
                 bool isSpecialChar = char.IsWhiteSpace(next) || char.IsControl(next) || char.IsSeparator(next);
                 if (isSpecialChar && foundNonWhitespace)
                 {
                     // End of the word, break
                     break;
                 }
+
                 foundNonWhitespace |= !isSpecialChar;
                 sb.Append(next);
                 nextByte = stream.ReadByte();
