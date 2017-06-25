@@ -129,5 +129,14 @@ namespace cgppm.UI
         {
             if (magnify.Visibility == Visibility.Visible) positionMagnifier(e.GetPosition(magnifyCanvas));
         }
+
+        private void magnifyCanvas_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (magnify.Visibility != Visibility.Visible) return;
+
+            double delta = Math.Sign(e.Delta) * 0.25;
+            magnifyScale.ScaleX += delta;
+            magnifyScale.ScaleY += delta;
+        }
     }
 }

@@ -83,7 +83,8 @@
             Cursor="Cross"
             PreviewMouseLeftButtonDown="magnifyCanvas_PreviewMouseLeftButtonDown"
             PreviewMouseLeftButtonUp="magnifyCanvas_PreviewMouseLeftButtonUp"
-            PreviewMouseMove="magnifyCanvas_PreviewMouseMove">
+            PreviewMouseMove="magnifyCanvas_PreviewMouseMove"
+            PreviewMouseWheel="magnifyCanvas_PreviewMouseWheel">
             <Grid x:Name="magnify" Visibility="Hidden">
                 <Ellipse
                     Fill="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
