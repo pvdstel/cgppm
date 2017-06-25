@@ -135,8 +135,8 @@ namespace cgppm.UI
             if (magnify.Visibility != Visibility.Visible) return;
 
             double delta = Math.Sign(e.Delta) * 0.25;
-            magnifyScale.ScaleX += delta;
-            magnifyScale.ScaleY += delta;
+            magnifyScale.ScaleX = Math.Max(1, Math.Min(10, magnifyScale.ScaleX + delta));
+            magnifyScale.ScaleY = Math.Max(1, Math.Min(10, magnifyScale.ScaleY + delta));
         }
     }
 }
