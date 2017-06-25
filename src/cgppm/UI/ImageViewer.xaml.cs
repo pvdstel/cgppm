@@ -77,6 +77,17 @@ namespace cgppm.UI
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) Close();
+            if ((e.Key == Key.C || e.Key == Key.X) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                Clipboard.SetImage(_image.BitmapSource);
+                Clipboard.Flush();
+            }
+        }
+
+        private void copyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage(_image.BitmapSource);
+            Clipboard.Flush();
         }
     }
 }
