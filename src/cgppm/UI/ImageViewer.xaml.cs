@@ -23,10 +23,12 @@ namespace cgppm.UI
     public partial class ImageViewer : Window
     {
         private Image _image;
+        private Cursor _magnifyCanvasCursor = null;
 
         public ImageViewer()
         {
             InitializeComponent();
+            _magnifyCanvasCursor = magnifyCanvas.Cursor;
         }
 
         public void SetImage(Image image)
@@ -77,6 +79,64 @@ namespace cgppm.UI
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape) Close();
+            if ((e.Key == Key.C || e.Key == Key.X) && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                Clipboard.SetImage(_image.BitmapSource);
+                Clipboard.Flush();
+            }
+        }
+
+        private void copyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetImage(_image.BitmapSource);
+            Clipboard.Flush();
+        }
+
+        private void positionMagnifier(Point position)
+        {
+            double startX = position.X - magnify.ActualWidth / 2,
+                   startY = position.Y - magnify.ActualHeight / 2;
+
+            Canvas.SetLeft(magnify, startX);
+            Canvas.SetTop(magnify, startY);
+
+            GeneralTransform toCanvas = magnifyCanvas.TransformToAncestor(this);
+            Rect transformedViewport = toCanvas.TransformBounds(new Rect(startX, startY, magnify.ActualWidth, magnify.ActualHeight));
+            magnifyBrush.Viewbox = transformedViewport;
+        }
+
+        private void magnifyCanvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            magnify.Visibility = Visibility.Visible;
+            magnifyCanvas.CaptureMouse();
+            positionMagnifier(e.GetPosition(magnifyCanvas));
+
+            // Hide cursor
+            magnifyCanvas.Cursor = Cursors.None;
+        }
+
+        private void magnifyCanvas_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            magnify.Visibility = Visibility.Hidden;
+            magnifyCanvas.ReleaseMouseCapture();
+            magnifyCanvas.Cursor = Cursors.Arrow;
+
+            // Show cursor
+            magnifyCanvas.Cursor = _magnifyCanvasCursor;
+        }
+
+        private void magnifyCanvas_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (magnify.Visibility == Visibility.Visible) positionMagnifier(e.GetPosition(magnifyCanvas));
+        }
+
+        private void magnifyCanvas_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (magnify.Visibility != Visibility.Visible) return;
+
+            double delta = Math.Sign(e.Delta) * 0.25;
+            magnifyScale.ScaleX += delta;
+            magnifyScale.ScaleY += delta;
         }
     }
 }
