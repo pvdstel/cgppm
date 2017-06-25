@@ -23,10 +23,12 @@ namespace cgppm.UI
     public partial class ImageViewer : Window
     {
         private Image _image;
+        private Cursor _magnifyCanvasCursor = null;
 
         public ImageViewer()
         {
             InitializeComponent();
+            _magnifyCanvasCursor = magnifyCanvas.Cursor;
         }
 
         public void SetImage(Image image)
@@ -88,6 +90,44 @@ namespace cgppm.UI
         {
             Clipboard.SetImage(_image.BitmapSource);
             Clipboard.Flush();
+        }
+
+        private void positionMagnifier(Point position)
+        {
+            double startX = position.X - magnify.ActualWidth / 2,
+                   startY = position.Y - magnify.ActualHeight / 2;
+
+            Canvas.SetLeft(magnify, startX);
+            Canvas.SetTop(magnify, startY);
+
+            GeneralTransform toCanvas = magnifyCanvas.TransformToAncestor(this);
+            Rect transformedViewport = toCanvas.TransformBounds(new Rect(startX, startY, magnify.ActualWidth, magnify.ActualHeight));
+            magnifyBrush.Viewbox = transformedViewport;
+        }
+
+        private void magnifyCanvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            magnify.Visibility = Visibility.Visible;
+            magnifyCanvas.CaptureMouse();
+            positionMagnifier(e.GetPosition(magnifyCanvas));
+
+            // Hide cursor
+            magnifyCanvas.Cursor = Cursors.None;
+        }
+
+        private void magnifyCanvas_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            magnify.Visibility = Visibility.Hidden;
+            magnifyCanvas.ReleaseMouseCapture();
+            magnifyCanvas.Cursor = Cursors.Arrow;
+
+            // Show cursor
+            magnifyCanvas.Cursor = _magnifyCanvasCursor;
+        }
+
+        private void magnifyCanvas_PreviewMouseMove(object sender, MouseEventArgs e)
+        {
+            if (magnify.Visibility == Visibility.Visible) positionMagnifier(e.GetPosition(magnifyCanvas));
         }
     }
 }
