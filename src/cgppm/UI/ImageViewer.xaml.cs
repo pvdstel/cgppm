@@ -84,6 +84,14 @@ namespace cgppm.UI
                 Clipboard.SetImage(_image.BitmapSource);
                 Clipboard.Flush();
             }
+            if (e.Key == Key.PageUp || e.Key == Key.OemPlus || e.Key == Key.Add)
+            {
+                zoomMagnifier(1);
+            }
+            else if (e.Key == Key.PageDown || e.Key == Key.OemMinus || e.Key == Key.Subtract)
+            {
+                zoomMagnifier(-1);
+            }
         }
 
         private void copyButton_Click(object sender, RoutedEventArgs e)
@@ -103,6 +111,15 @@ namespace cgppm.UI
             GeneralTransform toCanvas = magnifyCanvas.TransformToAncestor(this);
             Rect transformedViewport = toCanvas.TransformBounds(new Rect(startX, startY, magnify.ActualWidth, magnify.ActualHeight));
             magnifyBrush.Viewbox = transformedViewport;
+        }
+
+        private void zoomMagnifier(int direction)
+        {
+            if (magnify.Visibility != Visibility.Visible) return;
+
+            double delta = Math.Sign(direction) * 0.25;
+            magnifyScale.ScaleX = Math.Max(1, Math.Min(10, magnifyScale.ScaleX + delta));
+            magnifyScale.ScaleY = Math.Max(1, Math.Min(10, magnifyScale.ScaleY + delta));
         }
 
         private void magnifyCanvas_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -132,11 +149,7 @@ namespace cgppm.UI
 
         private void magnifyCanvas_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (magnify.Visibility != Visibility.Visible) return;
-
-            double delta = Math.Sign(e.Delta) * 0.25;
-            magnifyScale.ScaleX += delta;
-            magnifyScale.ScaleY += delta;
+            zoomMagnifier(e.Delta);
         }
     }
 }
