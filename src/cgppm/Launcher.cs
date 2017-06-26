@@ -8,6 +8,8 @@ namespace cgppm
 {
     public class Launcher
     {
+        private static List<string> _switches;
+        private static List<string> _files;
         private static List<Image> _convertedImages = new List<Image>();
 
         [STAThread]
@@ -17,11 +19,11 @@ namespace cgppm
 
             // Gather input data
             Console.Write("Parsing arguments... ");
-            List<string> switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1).ToLower()).ToList();
-            List<string> files = args.Where(s => File.Exists(s)).ToList();
+            _switches = args.Where(s => s[0] == '-' || s[0] == '/').Select(s => s.Substring(1).ToLower()).ToList();
+            _files = args.Where(s => File.Exists(s)).ToList();
             Console.WriteLine("done.");
 
-            if ((files.Count == 0 && switches.Count == 0) || switches.Contains("?") || switches.Contains("h") || switches.Contains("help"))
+            if ((_files.Count == 0 && _switches.Count == 0) || _switches.Contains("?") || _switches.Contains("h") || _switches.Contains("help"))
             {
                 Console.WriteLine();
                 Console.WriteLine(Properties.Resources.Help);
@@ -29,25 +31,44 @@ namespace cgppm
             }
 
             // Files count check
-            if (files.Count == 0)
+            if (_files.Count == 0)
             {
                 Console.WriteLine("No files were found. Specify some files and try again.");
                 return;
             }
-            Console.WriteLine(string.Format("Found {0} file(s).", files.Count));
+            Console.WriteLine(string.Format("Found {0} file(s).", _files.Count));
 
+            Dictionary<string, RawImage> rawImages = ParseFiles();
+            ConvertImages(rawImages);
+
+            string targetDir = GetTargetDirectory();
+            SaveImages(targetDir);
+            DeleteSourceFiles();
+            ShowUI();
+
+            Console.WriteLine("Exiting cgppm...");
+        }
+
+        #region Options and handling
+
+        private static Dictionary<string, RawImage> ParseFiles()
+        {
             // Parse files
             Console.Write("Parsing Netpbm files... ");
             Parser parser = new Parser();
             Dictionary<string, RawImage> rawImages = new Dictionary<string, RawImage>();
-            foreach (string file in files)
+            foreach (string file in _files)
             {
                 rawImages.Add(Path.GetFullPath(file), parser.Read(file));
             }
             Console.WriteLine("done.");
+            return rawImages;
+        }
 
+        private static void ConvertImages(Dictionary<string, RawImage> rawImages)
+        {
             // The option for generating 8 bit images
-            if (switches.Contains("8") || switches.Contains("8bit") || switches.Contains("8-bit"))
+            if (_switches.Contains("8") || _switches.Contains("8bit") || _switches.Contains("8-bit"))
             {
                 Console.Write("Generating 8-bit images... ");
                 _convertedImages.AddRange(Convert8Bit(rawImages));
@@ -55,22 +76,29 @@ namespace cgppm
             }
 
             // The option for generating 16 bit images
-            if (switches.Contains("16") || switches.Contains("16bit") || switches.Contains("16-bit"))
+            if (_switches.Contains("16") || _switches.Contains("16bit") || _switches.Contains("16-bit"))
             {
                 Console.Write("Generating 16-bit images... ");
                 _convertedImages.AddRange(Convert16Bit(rawImages));
                 Console.WriteLine("done.");
             }
+        }
 
+        private static string GetTargetDirectory()
+        {
             // Get target dir
-            string targetDir = switches.FirstOrDefault(s => s.StartsWith("target:") || s.StartsWith("target-dir:") || s.StartsWith("dir:"));
+            string targetDir = _switches.FirstOrDefault(s => s.StartsWith("target:") || s.StartsWith("target-dir:") || s.StartsWith("dir:"));
             if (targetDir != null)
             {
                 targetDir = targetDir.Split(new char[] { ':' }, 2)[1];
             }
+            return targetDir;
+        }
 
+        private static void SaveImages(string targetDir)
+        {
             // The option for saving as PNG
-            if (switches.Contains("save:png") || switches.Contains("save-png") || switches.Contains("savepng"))
+            if (_switches.Contains("save:png") || _switches.Contains("save-png") || _switches.Contains("savepng"))
             {
                 Console.Write("Saving as PNG... ");
                 SavePng(_convertedImages, targetDir);
@@ -78,8 +106,8 @@ namespace cgppm
             }
 
             // The option for saving as jpg
-            if (switches.Contains("save:jpg") || switches.Contains("save-jpg") || switches.Contains("savejpg") ||
-                switches.Contains("save:jpeg") || switches.Contains("save-jpeg") || switches.Contains("savejpeg"))
+            if (_switches.Contains("save:jpg") || _switches.Contains("save-jpg") || _switches.Contains("savejpg") ||
+                _switches.Contains("save:jpeg") || _switches.Contains("save-jpeg") || _switches.Contains("savejpeg"))
             {
                 Console.Write("Saving as JPG... ");
                 SaveJpg(_convertedImages, targetDir);
@@ -87,24 +115,39 @@ namespace cgppm
             }
 
             // The option for saving as bmp
-            if (switches.Contains("save:bmp") || switches.Contains("save-bmp") || switches.Contains("savebmp"))
+            if (_switches.Contains("save:bmp") || _switches.Contains("save-bmp") || _switches.Contains("savebmp"))
             {
                 Console.Write("Saving as BMP... ");
                 SaveBmp(_convertedImages, targetDir);
                 Console.WriteLine("done.");
             }
+        }
 
+        private static void DeleteSourceFiles()
+        {
+            if (_switches.Contains("delete-source") || _switches.Contains("delete-source-files") || _switches.Contains("deletesource"))
+            {
+                Console.Write("Deleting source files... ");
+                foreach (string sourceFile in _files)
+                {
+                    File.Delete(sourceFile);
+                }
+                Console.WriteLine("done.");
+            }
+        }
+
+        private static void ShowUI()
+        {
             // The option for showing a ui
-            if (switches.Contains("ui") || switches.Contains("show") || switches.Contains("showui") || switches.Contains("show-ui"))
+            if (_switches.Contains("ui") || _switches.Contains("show") || _switches.Contains("showui") || _switches.Contains("show-ui"))
             {
                 Console.WriteLine("Starting UI...");
                 Console.Write("Waiting for all UI windows to close... ");
                 UI.App.Main();
                 Console.WriteLine("UI closed.");
             }
-
-            Console.WriteLine("Exiting cgppm...");
         }
+        #endregion
 
         /// <summary>
         /// Gets the result of image conversion.
@@ -116,6 +159,8 @@ namespace cgppm
                 return _convertedImages;
             }
         }
+
+        #region Converting
 
         private static List<Image> Convert8Bit(Dictionary<string, RawImage> rawImages)
         {
@@ -140,6 +185,9 @@ namespace cgppm
             }
             return images;
         }
+        #endregion
+
+        #region Saving images
 
         private static void SavePng(IEnumerable<Image> images, string directory)
         {
@@ -170,5 +218,6 @@ namespace cgppm
                 Utilities.SaveBitmapSourceAsBmp(image.BitmapSource, Path.Combine(dir, image.Name + ".bmp"));
             }
         }
+        #endregion
     }
 }
