@@ -21,6 +21,8 @@ Options:
 
 	-ui, -show, -showui, -show-ui: displays a UI for every converted image.
 
+	-delete-source-files, -delete-source, -deletesource: deletes the source files.
+
 	-?, -h, -help or no arguments: displays this help message.
 
 	Instead of hyphens (-) all options may also start with slashes (/).
