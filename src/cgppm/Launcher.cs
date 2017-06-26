@@ -43,6 +43,7 @@ namespace cgppm
 
             string targetDir = GetTargetDirectory();
             SaveImages(targetDir);
+            DeleteSourceFiles();
             ShowUI();
 
             Console.WriteLine("Exiting cgppm...");
@@ -118,6 +119,19 @@ namespace cgppm
             {
                 Console.Write("Saving as BMP... ");
                 SaveBmp(_convertedImages, targetDir);
+                Console.WriteLine("done.");
+            }
+        }
+
+        private static void DeleteSourceFiles()
+        {
+            if (_switches.Contains("delete-source") || _switches.Contains("delete-source-files") || _switches.Contains("deletesource"))
+            {
+                Console.Write("Deleting source files... ");
+                foreach (string sourceFile in _files)
+                {
+                    File.Delete(sourceFile);
+                }
                 Console.WriteLine("done.");
             }
         }
